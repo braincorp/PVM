@@ -1,0 +1,9 @@
+[submodule "other_trackers/original_struck"]
+	path = other_trackers/original_struck
+	url = https://github.com/gnebehay/STRUCK
+[submodule "other_trackers/original_cmt"]
+	path = other_trackers/original_cmt
+	url = https://github.com/gnebehay/CMT
+[submodule "other_trackers/original_opentld"]
+	path = other_trackers/original_opentld
+	url = https://github.com/gnebehay/OpenTLD
