@@ -1,0 +1,26 @@
+{
+    "nodes": [
+    {
+        "name": "camera",
+        "params": {"camera_index": 0, "desired_width": 160, "desired_height": 120},
+        "loader": "python:BC.brainos_library.node.environments.universal_camera_input_node.UniversalCameraInputNode"
+    },
+    {
+        "name": "viewer",
+        "params": {"window_name": "SaliencyTrackerNode View - Drag and Drop to Prime Tracker",
+                   "desired_width": 320, "desired_height": 240},
+        "loader": "python:BC.brainos_library.node.environments.tracker_image_viewer_node.TrackerImageViewerNode"
+    },
+    {
+        "name": "tracker",
+        "params": {"remote_filename": "DARPA/Simulations/2015_11_18_15_04_20_context_in_middle_smaller_b434b5f3/PVM_failsafe_0002900000.p.gz", "cores": 20},
+        "loader": "python:future_encoder_framework.PVM_node.PVMTrackerNode"
+    }
+    ],
+    "graph": [
+        { "signal": "camera/image-out",   "slot": "viewer/image-in" },
+        { "signal": "camera/image-out",   "slot": "tracker/image-in" },
+        { "signal": "tracker/box-out",    "slot": "viewer/box-in" },
+        { "signal": "viewer/box-out",     "slot": "tracker/box-in" }
+    ]
+}

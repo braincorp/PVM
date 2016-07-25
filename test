@@ -1,0 +1,9 @@
+#!/bin/bash
+# Check for python27 (so this works on centos)
+if type python27 > /dev/null 2>/dev/null ; then
+	PYTHONEXEC=python27
+else
+	PYTHONEXEC=python
+fi
+
+$PYTHONEXEC -m pytest  --junitxml=testresults.xml
