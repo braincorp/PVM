@@ -71,10 +71,8 @@ a bunch of data in that structure. In addition by configuring the PVM_Storage.py
 in ~/.aws/credentials file, PVM can use an S3 bucket to mirror the data directory. This is useful when running
 simulations on a cluster etc.
 
-## Running demos
-
-Before running the full PVM simulation try the system by running some demos. Go to PVM_models directory and run:
-
+## Basic demos
+In order to familiarize yourself with this framework you may want to run/read several small demos. Running them is not necessary for reproducing the results of the paper, but could be fun on its own. If you are more interested with the PVM itself, it is safe to skip to the next section. Otherwise go to PVM_models directory and run:
 ```
 python demo00_run.py
 ```
@@ -86,23 +84,25 @@ python demo01_run.py
 This is a bit more interesting as this demo will simulate the Ising model at critical temperature. You may decide to look
 at it for a while, as interesting structures may emerge. [ESC] will quit.
 
-Demos 2,3,4 require a camera or an input movie. These demos are more along the lines of what we will see with the full PVM simulation. Unless a movie is given through -f parameter the demos will try to open a camera. 
+Demos 2,3,4 require a camera or an input movie. These demos are more along the lines of what we will see with the full PVM simulation (however we provide the data files for PVM). Unless a movie is given through -f parameter the demos will try to open a camera. 
 ```
 python demo02_run.py -f my_movie_file.avi
 python demo03_run.py -f my_movie_file.avi
 python demo04_run.py -f my_movie_file.avi
 ```
- Demo 2 is a tile of small predictive
-encoders trying to predict a movie frame based on the previous two. In Demo 3 an image is being predicted by a set of
-predictive encoders looking at different aspects of the input. There is a set of future encoders digesting two 8x8
+where ```my_movie_file.avi``` is any movie file which you have to supply. Demo 2 is a tile of small predictive
+encoders trying to predict a movie frame based on the previous two frames. In Demo 3, an image is being predicted by a set of
+predictive encoders that look at different aspects of the input. One set of these "future encoders" digests two 8x8
 frames to predict the next one, another set taking 8 4x4 frames to predict 4 subsequent frames and another set taking
-32 2x2 frames to predict 16 subsequent frames. Additionally there is one unit taking the whole image as
+32 2x2 frames to predict 16 subsequent frames. Additionally there is one unit that takes the whole image as
 8x8 block whose internal representations are shared as context with all the other units.
-The system has feedback connections, more temporal areas feed back to more spatial areas. Also cross-like
-neighbourhood of lateral projections is instantiated. In Demo 4 a future/predictive encoder is being instantiated
-to predict a camera image based on two previous frames. The encoder predicts the signal and its own error on that
-signal, that is additional set of units are trying to predict the magnitude of error between the prediction and the signal.
-In addition the hidden layer activations from the previous step of execution are used as the context block.
+The system has feedback connections, those units with larger temporal buffers feed back to those with more spatial information. Also a cross-like
+neighbourhood of lateral projections is instantiated. 
+
+In Demo 4, a future/predictive encoder is instantiated
+that predicts a camera image based on two previous frames. Here, the encoder predicts the signal and its own error for that
+signal (i.e., an additional set of units tries to predict the magnitude of error between the prediction and the signal).
+In addition the hidden layer activations from the previous step of execution are used as as context input block.
 Second order error is calculated as the error of the error prediction. Also, the learning rate of the primary signal
 is modulated by the magnitude of the second order error.
 
@@ -158,7 +158,7 @@ This window allows you to see what is going on, but it will slow down the simula
 
 #### Leftover processes
 This code is just for experiments and not for production so things may sometimes go wrong and the simulation either
-crashes or you have to ctrl+C it. In such situation some of the
+crashes or you have to Ctrl+C it. In such situation some of the
 compute threads may keep running on the CPU in a busy loop and substantially decrease the performance of your machine. It is
 recommended that you verify what is running every once in a while with the top command. To kill processes selectively
 you may use commands like this:
@@ -186,7 +186,7 @@ python run_tracking_benchmark.py -T0 -T1 -T2 -s stop_sign_full -r PVM_models/
 2016_01_08_18_54_44_stop_simple____dd25d826/PVM_failsafe_0095000000.p.gz -c 5 -S 2 -e -p test
 ```
 This will run the PVM tracker (-T0) along with null and center trackers (-T1, -T2) on ```stop_sign_full``` set, the PVM tracker
-will run two steps on every frame to allow it to settle a bit (-S 2), the results will be saved in ~/benchmark_results/test[...].
+will run two steps on every frame to allow its dynamics to settle a bit (-S 2), the results will be saved in ```~/benchmark_results/test[...]```.
 The -e flag is required to actually **execute** the benchmark, otherwise the script will try to recompute the results saved from
 previous runs. The full set of options is available by running the script without any parameters, i.e.: 
 
@@ -199,18 +199,18 @@ The paper *"Unsupervised Learning from Continuous Video in a Scalable Predictive
 
 #### Experiment 1 
 
-Experiment 1 can be reproduces from scratch (training) or from a set of pre trained models that we release along with the code. To reproduce from scratch run the following commands:
+Experiment 1 can be reproduced from scratch (i.e., training) or from a set of pre-trained models that we release along with the code. To reproduce from scratch run the following commands:
 ```
 python PVM_run.py -B -S model_zoo/experiment1_green_ball.json
 python PVM_run.py -B -S model_zoo/experiment1_stop_sign.json
 python PVM_run.py -B -S model_zoo/experiment1_face.json
 ```
-We recommend to run each of these commands on a separate, powerful machine. Now all you need to do is wait. Depending on the available CPU, it will take 10h-30h to simulate 1M steps. To reproduce the data presented in the paper you need to run for 95M steps, which might be a while (you should get reasonable performance after 20M though). As the simulation proceeds it will write snapshots every 100k steps, so make sure there is enough drive space available as well. Each snapshot may take 200MB. After this is completed you may directly run the benchmark on these snapshots as here:
+We recommend to run each of these commands on a separate, powerful machine. Now all you need to do is wait. Depending on the available CPU resources, it will take 10h-30h to simulate 1M steps. To reproduce the data presented in the paper you need to run for 95M steps, which might be a while (although you should get reasonable performance after 20M though). As the simulation proceeds it will write snapshots every 100k steps, so make sure there is enough drive space available as well. Each snapshot may take 200MB. After this is completed you may directly run the benchmark on these snapshots as here:
 ```
 python run_tracking_benchmark.py -T0 -T1 -T2 -s stop_sign_full -r PVM_models/
 PATH_TO_MY_SNAPSHOT/PVM_failsafe_0095000000.p.gz -c 5 -S 4 -e -p test
 ```
-If you dont want to wait several months of training then you can use the pre trained models we ship with the code. Download and unzip the file PVM_data_models01.zip. The file contains 9 files:
+If you dont want to wait several months of training then you can use the pre trained models we ship with the code. Download and unzip the file ```PVM_data_models01.zip```. The file contains 9 files:
 ```
 drwxrwxr-x  3.0 unx        0 bx stor 16-Jun-23 10:49 PVM_data/PVM_models/2016_01_08_18_56_56_face_simple____47aaabd4/
 -rw-rw-r--  3.0 unx 187379490 bx defN 16-Jun-23 10:48 PVM_data/PVM_models/2016_01_08_18_56_56_face_simple____47aaabd4/PVM_failsafe_0040000000.p.gz
@@ -225,16 +225,17 @@ drwxrwxr-x  3.0 unx        0 bx stor 16-Jun-23 10:13 PVM_data/PVM_models/2016_01
 -rw-rw-r--  3.0 unx 187426899 bx defN 16-Jun-23 10:37 PVM_data/PVM_models/2016_01_08_19_01_50_green_b_simple_d547417c/PVM_failsafe_0040000000.p.gz
 -rw-rw-r--  3.0 unx 189394630 bx defN 16-Jun-23 10:36 PVM_data/PVM_models/2016_01_08_19_01_50_green_b_simple_d547417c/PVM_failsafe_0095000000.p.gz
 ```
-Pass these to the tracking benchmark to reproduce majority of the results.
+Pass these to the tracking benchmark to reproduce the majority of the results.
 
-#### Experiement 2
-In this case the model is trained in an unsupervised way for a long time. Much like in the epxeriment 1 you can train a model from scratch or use one of our pre-trained instances. We constructed a dataset out of clips from all the three categories plus some movies without any target labeled. The dataset is called "non_spec" to indicate there is no specific target in it. To train the model run:
+#### Experiment 2
+
+In this case the model is trained in an unsupervised way for a long time. Much like in the Experiment 1 you can train a model from scratch or use one of our pre-trained instances. We constructed a dataset out of clips from all the three categories plus some movies without any target labeled. The dataset is called "non_spec" to indicate there is no specific target in it. To train the model run:
 ```
 python PVM_run.py -B -S model_zoo/experiment2.json
 ```
-And wait. Much like with the experiment 1 it will take weeks if not months to get to 100M steps. 
+And wait. Much like in Experiment 1 it will take weeks if not months to get to 100M steps. 
 
-For the pre-trained files, download and unzip PVM_data_models03.zip. The file contains 5 files:
+For the pre-trained files, download and unzip ```PVM_data_models03.zip```. The zip contains 5 files:
 ```
 -rw-rw-r--  3.0 unx 187227041 bx defN 16-Jun-23 11:31 PVM_data/PVM_models/2016_03_21_17_03_18_primable_simple_polynomial_small_11e4cc9f/PVM_failsafe_0020000000.p.gz
 -rw-rw-r--  3.0 unx 187648051 bx defN 16-Jun-23 11:30 PVM_data/PVM_models/2016_03_21_17_03_18_primable_simple_polynomial_small_11e4cc9f/PVM_failsafe_0040000000.p.gz
@@ -243,13 +244,13 @@ drwxrwxr-x  3.0 unx        0 bx stor 16-Jun-23 11:44 PVM_data/PVM_models/2016_02
 -rw-rw-r--  3.0 unx 679544447 bx defN 16-Jun-23 11:44 PVM_data/PVM_models/2016_02_10_02_16_33_primable_simple_large_52ae3b91/PVM_failsafe_0020000000.p.gz
 -rw-rw-r--  3.0 unx 680852880 bx defN 16-Jun-23 11:35 PVM_data/PVM_models/2016_02_10_02_16_33_primable_simple_large_52ae3b91/PVM_failsafe_0040000000.p.gz
 ```
-The "primable_simple_polynomial_smal" snapshots are instances of the models presented in the paper. "primable_simple_large" is a similar instance but much bigger (and slower). You can play with the bigger instance but we have not presented any results from it in the paper. 
+The "primable_simple_polynomial_small" snapshots are instances of the models presented in the paper. The "primable_simple_large" is a similar instance but much bigger (and slower). We have included the bigger instance for completeness, but it is not used for any of the results presented in the paper. 
 
-Once the unsupervised model is pre-trained now you can train it in the supervised mode. To do that, run:
+Once the unsupervised model is pre-trained,  you can now start the second phase of training, in supervised mode. To do that, run:
 ```
 python PVM_run.py -r PATH_TO/pretrained_model.p.gz -D -O '{"supervised": "1", "supervised_rate": "0.0002", "dataset": "stop_sign", "steps": "10000" }'
 ```
-Modify the parameters to fit the needs of your experiment. For one of our pre-trained models this command may look like this (you may skip the display option -D for faster run time):
+Modify the parameters to fit the needs of your experiment. For one of our pre-trained models this command looks like this (recall you may skip the display option ```-D``` for faster run time):
 
 ```
 python PVM_run.py -r PVM_models/2016_03_21_17_03_18_primable_simple_polynomial_small_11e4cc9f/PVM_failsafe_0095000000.p.gz -D -O '{"supervised": "1", "supervised_rate": "0.0002", "dataset": "stop_sign", "steps": "100000" }'
