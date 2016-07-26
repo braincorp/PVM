@@ -1,7 +1,7 @@
 # Predictive Vision Model 
 
 ## Introduction
-This repository contains necessary files and demos used for running multicore simulations for the Predictive Vision Model paper entitled *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016).
+This repository contains necessary files and demos used for running multicore simulations for the Predictive Vision Model paper entitled *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016 (https://arxiv.org/abs/1607.06854)).
 
 The code includes a framework that can run a large number of python objects in parallel, synchronized by global barriers, utilizing state kept in shared memory.
 ## Starting up
@@ -51,7 +51,7 @@ wget http://pvm.braincorporation.net/PVM_data_sequences.zip
 unzip PVM_data_sequences.zip
 rm PVM_data_sequences.zip
 ```
-If you are interested in replicating the results from Piekniewski et al., 2016, you may want to download a few pre-trained models:
+If you are interested in replicating the results from Piekniewski et al., 2016 (https://arxiv.org/abs/1607.06854), you may want to download a few pre-trained models:
 ```
 cd
 wget http://pvm.braincorporation.net/PVM_data_models01.zip
@@ -109,7 +109,7 @@ is modulated by the magnitude of the second order error.
 ## The PVM model
 
 The PVM is a larger project that to some extent resembles Demos 2-4, but is much more complex. It constructs
-a hierarchy of predictive encoders as described in the paper *[Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network]*. The model may be evaluated on online visual tracking task. The descriptions of meta-parameters of the models that can be simulated are available in
+a hierarchy of predictive encoders as described in the paper *[Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network]* (https://arxiv.org/abs/1607.06854). The model may be evaluated on online visual tracking task. The descriptions of meta-parameters of the models that can be simulated are available in
 ```PVM_models/model_zoo```. Feel free to modify these settings, but be aware that simulating some of these models to convergence
 may take days if not weeks (at least until a GPU version is implemented, which is not yet the case). For your convenience
 several pre-trained models are available.
@@ -195,7 +195,7 @@ python run_tracking_benchmark.py
 ```
 ### Reproducing paper results
 
-The paper *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016) contains three experiments. The software included here allows for reproduction of two of them. The third one involves an integration with virtual world (Unreal 4.9), which we are currently not releasing, but may release in the future. 
+The paper *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016)(https://arxiv.org/abs/1607.06854) contains three experiments. The software included here allows for reproduction of two of them. The third one involves an integration with virtual world (Unreal 4.9), which we are currently not releasing, but may release in the future. 
 
 #### Experiment 1 
 
@@ -258,7 +258,7 @@ python PVM_run.py -r PVM_models/2016_03_21_17_03_18_primable_simple_polynomial_s
 
 ## Summary
 
-The software presented here allows for reproduction of the majority of tracking results presented in the paper *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016).
+The software presented here allows for reproduction of the majority of tracking results presented in the paper *"Unsupervised Learning from Continuous Video in a Scalable Predictive Recurrent Network"* (Piekniewski et al., 2016) (https://arxiv.org/abs/1607.06854).
 This code is meant for scientific experimental purposes and should not be considered production-ready software (see also
 the license restrictions preventing you from using this code for commercial purposes). Brain Corporation provides no
 warranty about functionality of this code, and you are using it at your own risk. In particular, these simulations are compute-intensive and we are not responsible if they cause your computer to run at high temperatures and/or cause excessive CPU heating. You can and should read all the source provided here to make sure you know what this code is doing (hopefully it is reasonably documented). We recommend also reading the paper.
