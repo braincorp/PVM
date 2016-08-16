@@ -101,10 +101,7 @@ def plot_model(filename, remote, compare, display):
         simulation_dict1 = CoreUtils.load_model(filename1)
     simulation_dict = CoreUtils.load_model(filename)
 
-    num_layers = 0
-    for k in simulation_dict.keys():
-        if "state_array" in k:
-            num_layers += 1
+    num_layers = len(simulation_dict["state_arrays"])
     plt.figure(figsize=(7, 5))
     colors = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
     ids = np.where(simulation_dict['error_log'][0, :] > 0)[0]

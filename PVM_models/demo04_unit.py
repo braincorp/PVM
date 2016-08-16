@@ -111,7 +111,7 @@ class ExecutionUnit(AbstractExecutionUnit.ExecutionUnit):
         error[:actual_signal.shape[0]] = actual_signal-predicted[:actual_signal.shape[0]]
         error[actual_signal.shape[0]:] = np.abs(error[:actual_signal.shape[0]]) - predicted[actual_signal.shape[0]:]
         error[:actual_signal.shape[0]] = np.multiply(error[:actual_signal.shape[0]], np.abs(error[actual_signal.shape[0]:]))
-        self.MLP.train2(input, error)
+        self.MLP.train2(error)
 
         predicted = 255*predicted[:actual_signal.shape[0]].reshape((self.block[2], self.block[3], 3))
         self.predicted_array[self.block[0]:self.block[0]+self.block[2], self.block[1]:self.block[1]+self.block[3]] = predicted.astype(np.uint8)

@@ -73,7 +73,7 @@ class ExecutionManager(object):
         """
 
 
-class AsbtractSignalProvider(object):
+class AbstractSignalProvider(object):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
