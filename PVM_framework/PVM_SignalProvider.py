@@ -34,7 +34,7 @@ import os
 import numpy as np
 
 
-class SimpleSignalProvider(AbstractExecutionManager.AsbtractSignalProvider):
+class SimpleSignalProvider(AbstractExecutionManager.AbstractSignalProvider):
     def __init__(self, frame_resolution, heatmap_resolution, files, storage, channel="default", remove_files=True, reverse=False):
         """
         Handy object to provide input frames and supervising heatmaps efficiently
@@ -130,7 +130,7 @@ class SimpleSignalProvider(AbstractExecutionManager.AsbtractSignalProvider):
         return self.index
 
 
-class StereoSignalProvider(AbstractExecutionManager.AsbtractSignalProvider):
+class StereoSignalProvider(AbstractExecutionManager.AbstractSignalProvider):
     def __init__(self, frame_resolution, heatmap_resolution, files, storage, channel="default", remove_files=True, only_one_channel=""):
         """
         Handy object to provide input frames and supervising heatmaps efficiently
@@ -240,7 +240,7 @@ class StereoSignalProvider(AbstractExecutionManager.AsbtractSignalProvider):
         return self.index
 
 
-class TripleSignalProvider(AbstractExecutionManager.AsbtractSignalProvider):
+class TripleSignalProvider(AbstractExecutionManager.AbstractSignalProvider):
     def __init__(self, frame_resolution, heatmap_resolution, files1, files2, files3, storage, channel="default", remove_files=True):
         """
         Handy object to provide input frames and supervising heatmaps efficiently

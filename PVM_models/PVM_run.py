@@ -290,6 +290,11 @@ if __name__ == '__main__':
     except:
         have_display = False
         print "No display detected, turning off visualizations."
+
+    using_cmdline_options = len(args.options) > 0
+    using_json_options = len(args.spec) > 0
+    assert not (using_cmdline_options and using_json_options), "We don't support using both command line and json spec options at the same time. (Suggestion: put all options in the json spec)"
+
     options = args.options
     if args.spec != "":
         options = json.load(open(args.spec, "r"))
