@@ -89,6 +89,8 @@ if __name__ == "__main__":
                         img = crop_res
                     else:
                         img = np.zeros((box_shape[0], box_shape[1], 3), dtype=np.uint8)
+                elif args.size:
+                    img = cv2.resize(img, dsize=box_shape, interpolation=cv2.INTER_CUBIC)
                 cv2.imshow("Player", img)
                 if args.output != "":
                     if _video is None:
